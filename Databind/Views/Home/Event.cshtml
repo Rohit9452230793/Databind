@@ -1,0 +1,99 @@
+﻿@model Databind.Models.T_Event
+
+@{
+    ViewBag.Title = "Event";
+    var message = TempData["msg"] ?? string.Empty;
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    var message = '@message';
+    if (message == "1")
+        alert("Record Save Successfully !");
+    else if (message == "update")
+        alert("Record already Exists !");
+    else if (message == "3")
+        alert("Record Update Successfully !");
+
+    function Delete(sid) {
+        var result = confirm("Do You Want Delete are not ?:");
+        if (result) {
+            $.ajax(
+                {
+                    url: "@Url.Action("Event_Delete", "Admin")",
+                    type: 'post',
+                    datatype: 'json',
+                    data: { sid: sid },
+                    asycs: false,
+                    success: function (isConfirm) {
+                        alert('Record Delete Successfully !'); location.reload();
+                    }
+                });
+        }
+    }
+
+</script>
+
+@using (Html.BeginForm("Event", "Home", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.Eid, new { @id = "EId" })
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label>Titel @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })</label>
+
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@ViewBag.Button" name="command" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered table-responsive" id="example">
+    <thead>
+        <tr>
+            <th>
+                Sr.No
+            </th>
+            <th>
+                Title
+            </th>
+            <th>Action </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{var r = 1; }
+        @if (ViewBag.Event != null)
+        {
+            foreach (var item in ViewBag.Event)
+            {
+                <tr>
+                    <td>
+                        @(r++)
+                    </td>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>
+                        <a title='Update' onclick="location.href='@Url.Action("Event_Update", "Admin", new { Rid = @item.Eid })'">
+                            <span class="fa fa-edit btn-sm btn-info">Update</span>
+                        </a>
+                        <a title='Delete' onclick='Delete(@item.Eid)' href="#">
+                            <span class="fa fa-times btn-sm btn-danger">Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

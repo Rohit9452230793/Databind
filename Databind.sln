@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Databind", "Databind\Databind.csproj", "{83057120-9876-4770-A416-0BE15B91EAF7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83057120-9876-4770-A416-0BE15B91EAF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83057120-9876-4770-A416-0BE15B91EAF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83057120-9876-4770-A416-0BE15B91EAF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83057120-9876-4770-A416-0BE15B91EAF7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

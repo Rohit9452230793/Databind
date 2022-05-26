@@ -1,0 +1,161 @@
+﻿@model Databind.Models.M_Event
+@using Databind.Models
+
+@{
+    ViewBag.Title = "M_Event";
+    var message = TempData["msg"] ?? string.Empty;
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    var message = '@message';
+    if (message == "1")
+        alert("Record Save Successfully!");
+
+    else if (message == "3")
+        alert("Record Update Successfully!");
+
+    function Delete(sid) {
+        var result = confirm("Do You Want Delete are not :");
+        if (result) {
+            $.ajax(
+                {
+                    url: "@Url.Action("E_Delete", "Admin")",
+                    type: 'post',
+                    datatype: 'json',
+                    data: { sid: sid },
+                    asycs: false,
+                    success: function (isConfirm) {
+                        alert('Record Delete Successfully!'); location.reload();
+                    }
+
+
+                });
+        }
+    }
+</script>
+
+@using (Html.BeginForm("M_Event", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.EventId, new { @id = "EventId" })
+    @Html.HiddenFor(model => model.Images, new { @id = "imgs" })
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label>Title @Html.ValidationMessageFor(model => model.Eid, "", new { @class = "text-danger" })</label>
+                @Html.DropDownListFor(model => model.Eid, (new MasterData()).LoadMaster(1), new { @id = "Eid", @class = "form-control" })
+
+
+            </div>
+            <div class="form-group col-md-6">
+                <label>Name @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })</label>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label> Date @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" }) </label>
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @id = "Date", @class = "form-control" } })
+            </div>
+            <div class="form-group col-md-6">
+                <label>Images</label>
+                <input type="file" name="imgs" Id="imgs" placeholder="Choose Your Files :" class="form-control" /> <br />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label>Title 2 </label>
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="form-group col-md-6">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group col-md-12">
+                    <label> Description  </label>
+                    @Html.ValidationMessageFor(model => model.Discription, "", new { @class = "text_danger" })
+                    @Html.TextAreaFor(model => model.Discription, new { rows = "8", @id = "Discription", style = "resize:none;width:80%;", placeholder = Html.DisplayNameFor(m => m.Discription), @class = "textarea-editor", @required = "required" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@ViewBag.button" name="command" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+} <table class="table table-bordered table-responsive" id="example">
+    <thead>
+        <tr>
+            <th>
+                Sr.No
+            </th>
+
+            <th>
+                Title
+            </th>
+
+            <th>
+                Name
+            </th>
+            <th>
+                Discription
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Images
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{var r = 1; }
+        @if (ViewBag.M_Event != null)
+        {
+            foreach (var item in ViewBag.M_Event)
+            {
+                <tr>
+                    <td>
+                        @(r++)
+                    </td>
+
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@Html.Raw(@item.Discription)</td>
+                    <td>@item.Date</td>
+                    <td>
+                        <img src="@item.Images" style="height:80px;width:80px;" class="img img-responsive img-circle" alt="Alternate Text" />
+                    </td>
+
+
+                    <td>
+
+                        <a title='Update' onclick="location.href='@Url.Action("E_Update", "Home", new { Eid = @item.EventId })'">
+                            <span class="fa fa-edit btn-sm btn-info">Update</span>
+                        </a>
+                        <a title='Delete' onclick='Delete(@item.EventId)' href="#">
+                            <span class="fa fa-times btn-sm btn-danger">Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+
+
+    </tbody>
+</table>
+
